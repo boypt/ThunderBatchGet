@@ -14,5 +14,5 @@ This program consists of 2 parts:
     * For Firefox, install greasemonkey and install the `cloudbatchget.user.js` file.
 
 2. Run `ThunderBatchGet_daemon.py` in the command line.
-3. Open Lixian Cloud in the browser, login, when page fully loaded, 2 extra links are insert into the page left sidebar. Click `InsertDownLink`, a buttom will appear in each downloaded files in the main list. Click that buttom will begin a download in the background, process can be seen in the automaticly opened browser, which a simple UI listening at `localhost:8080`.
+3. Open Lixian Cloud in the browser, login, when page fully loaded, 2 extra links are insert into the page left sidebar. Click `InsertDownLink`, a bottom will appear in each downloaded files in the main list. Click that bottom will begin a download in the background, process can be seen in the automaticly opened browser, which a simple UI listening at `localhost:8080`.
     
