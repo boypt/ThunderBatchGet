@@ -53,14 +53,17 @@ $(function () {
 
                 var downall_btn = $('<a style="margin-left: 15px;" class="batchget" href="#">DownAll(Files)</a>')
                     .click(function (){
-                        $("div#rowbox_list div.rw_list").each(function () { 
-                            icon = $(this).find("img.png");
+                        $("div#rowbox_list div.rw_list input[type=checkbox]:checked").each(function () { 
+                            var list = $(this).parents("div.rw_list");
+                            icon = list.find("img.png");
                             if ($(icon).attr("src").indexOf("bt") == -1) {
-                                dl_name = $(this).find('input[id^="durl"]').attr("value");
-                                dl_url = $(this).find('input[id^="dl_url"]').attr("value");
+                                dl_name = list.find('input[id^="durl"]').attr("value");
+                                dl_url = list.find('input[id^="dl_url"]').attr("value");
                                 console.log("dl_url", dl_url);
                                 console.log("dl_name", dl_name);
                                 //request_for_download(dl_name, dl_url);
+                                $.get(API_BASE + "/thunder_single_task", 
+                                        { name: dl_name, url: dl_url, cookies: document.cookie });
                             }
                         });
                 }).appendTo("div.sellection:visible p");// all single files
@@ -94,6 +97,8 @@ $(function () {
                             console.log("dl_name", dl_name);
                             console.log("dl_url", dl_url);
                             //request_for_download(dl_name, dl_url);
+                            $.get(API_BASE + "/thunder_single_task", 
+                                    { name: dl_name, url: dl_url, cookies: document.cookie });
                         });
                 }).appendTo("div.sellection:visible p");
 
