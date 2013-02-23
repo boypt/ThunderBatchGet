@@ -91,26 +91,29 @@ $(function () {
                 // down all
                 var downall_btn = $('<a style="margin-left: 15px;" href="#">DownAll</a>')
                     .click(function (){
-                        $('input[name="bt_taskname"]').each(function () {
-                            var dl_name = $(this).attr("value");
-                            var dl_url = $(this).nextUntil("input[id^=btdownurl").attr("value");
+                        //$('input[name="bt_taskname"]').each(function () {
+                        $('div.rw_list input[name=bt_list_ck]:checked').each(function () {
+                            var list = $(this).parents("div.rw_list");
+                            var span = list.find("span.namelink span:first-child");
+
+                            var dl_name = span.attr("title");
+                            var dl_url = span.attr("href");
                             console.log("dl_name", dl_name);
                             console.log("dl_url", dl_url);
                             //request_for_download(dl_name, dl_url);
-                            $.get(API_BASE + "/thunder_single_task", 
-                                    { name: dl_name, url: dl_url, cookies: document.cookie });
+                            $.get(API_BASE + "/thunder_single_task", { name: dl_name, url: dl_url, cookies: document.cookie });
                         });
                 }).appendTo("div.sellection:visible p");
 
             } // insert bt view
 
             return false;
-        }).appendTo("div.side_nav");
+        }).insertAfter("h2.saveside:last");
         $('<h2 class="saveside"><a href="#"><em class="ic_sf"></em>ChangeServer</a></h2>').click(function (){
             API_BASE = prompt("BatchWget Server", "http://127.0.0.1:8080");
             if ( API_BASE.substr(-1) === "/") API_BASE = API_BASE.substring(0, API_BASE.lastIndexOf('/'))
 
-        }).appendTo("div.side_nav");
+        }).insertAfter("h2.saveside:last");
 
     }
 
