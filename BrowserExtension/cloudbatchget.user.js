@@ -10,7 +10,7 @@
 
 // @match         http://lixian.qq.com/*
 
-////// @require       http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js
+////// @require       http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 
 // ==/UserScript==
 
@@ -31,12 +31,12 @@ $(function () {
             if ($("#rowbox_list").is(":visible")) {
                 console.log("rowbox_list visible");
 
-                $("div#rowbox_list div.rw_list").each(function () { 
+                $("div.rwbox div.rw_list").each(function () {
                     icon = $(this).find("img.png");
                     if ($(icon).attr("src").indexOf("bt") == -1) {
                         var tid = $(this).attr("taskid"); 
                         console.log("tid", tid);
-                        var btns = $(this).find("div.rwset p").last();
+                        var btns = $(this).find("div.rwset p:first");
                         $('<a class="rwbtn ic_redownloca batchget" href="#">Down</a>')
                             .click(function () { 
                                 var pardiv = $(this).parents("div.rw_inter");
@@ -53,7 +53,7 @@ $(function () {
 
                 var downall_btn = $('<a style="margin-left: 15px;" class="batchget" href="#">DownAll(Files)</a>')
                     .click(function (){
-                        $("div#rowbox_list div.rw_list input[type=checkbox]:checked").each(function () { 
+                        $("div.rwbox_list div.rw_list input[type=checkbox]:checked").each(function () { 
                             var list = $(this).parents("div.rw_list");
                             icon = list.find("img.png");
                             if ($(icon).attr("src").indexOf("bt") == -1) {
@@ -75,7 +75,7 @@ $(function () {
 
                 // each one
                 $("div#rwbox_bt_list div.rw_list").each(function () { 
-                    var btns = $(this).find("div.rwset p").last();
+                    var btns = $(this).find("div.rwset p:first");
                     $('<a class="rwbtn ic_redownloca batchget" href="#">Down</a>')
                         .click(function () { 
                             var btid  = $(this).parents("div.rw_list").attr('i');
