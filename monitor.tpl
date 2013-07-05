@@ -4,7 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Control Panel</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="http://jquery.offput.ca/js/jquery.timers.js" type="text/javascript" charset="utf-8"></script>
 
 <style type="text/css">
 
@@ -102,7 +101,9 @@ a.taskbuttom {
 </style>
 <script type="text/javascript">
 
-API_BASE = ""
+API_BASE = "";
+TIMER_FLAG = 0;
+TASK_TIMER_ID = null;
 
 
 function update_tasks() {
@@ -131,9 +132,10 @@ function update_tasks() {
                                 .children("h2").html($(this).html());
                     }
 
-                    $(".taskinfo:visible").stopTime().slideUp();
-                    $("#task_control_" + uid).slideDown()
-                        .everyTime(500, "timer"+uid, function (){
+                    clearInterval(TASK_TIMER_ID);
+                    $(".taskinfo:visible").slideUp();
+                    $("#task_control_" + uid).slideDown();
+                    TASK_TIMER_ID = setInterval(function (){
                             $.getJSON(API_BASE + "/query_task_log/" + uid)
                                 .success(function (data){
                                     //console.log(data);
@@ -145,7 +147,7 @@ function update_tasks() {
                                     }
                                     if (data.status != "Running") {
                                         if (data.status == "Done" || data.status === "Stop" || data.status === "Queue")
-                                            $(tc).stopTime("timer"+uid);
+                                            clearInterval(TASK_TIMER_ID);
                                         update_tasks();
                                         $(tc).children("h2").children("em").text(data.status);
                                         $(logwindow).append("subprocess ended.<br />");
@@ -153,7 +155,7 @@ function update_tasks() {
                                             $(logwindow).append("Task Retried " + data.retry_time + " times.<br />");
                                         if (data.retry_time > 5) {
                                             $(logwindow).append("Update stoped.");
-                                            $(tc).stopTime("timer"+uid);
+                                            clearInterval(TASK_TIMER_ID);
                                         }
 
                                     }
@@ -164,9 +166,9 @@ function update_tasks() {
                             })
                                 .error(function (err) {
                                     console.log(err);
-                                    $(tc).stopTime("timer"+uid);
+                                    clearInterval(TASK_TIMER_ID);
                             });
-                        });
+                        }, 500);
                     return false;
                 });
             }
@@ -194,7 +196,7 @@ $(function () {
     });
 
     $("#pauselog").click(function (){
-        $(".taskinfo:visible").stopTime();
+        clearInterval(TASK_TIMER_ID);
         return false;
     });
     $("#clearlog").click(function (){
@@ -216,9 +218,8 @@ $(function () {
         $("a[uid=" + uid + "]").click();
         return false;
     });
-    $("#tasks").everyTime(5000, "timer_tasks", update_tasks);
+    setInterval(update_tasks, 5000);
     update_tasks();
-    
     
 });
 
