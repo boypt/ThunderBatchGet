@@ -218,6 +218,13 @@ $(function () {
         $("a[uid=" + uid + "]").click();
         return false;
     });
+    $("#requeue").click(function (){
+        var uid = $("div[id^=task_control_]:visible").attr('taskuid');
+        $.get(API_BASE + "/requeue/" + uid).success(function (data) { });
+        update_tasks();
+        $("a[uid=" + uid + "]").click();
+        return false;
+    });
     setInterval(update_tasks, 5000);
     update_tasks();
     
@@ -249,6 +256,7 @@ $(function () {
         <li><a id="clearlog" href="#">ClearLog</a></li>
         <li><a id="forcerestart" href="#">ForceRestart</a></li>
         <li><a id="forcestop" href="#">ForceStop</a></li>
+        <li><a id="requeue" href="#">ReQueue</a></li>
     </ul>
 </div>
 <!-- -->

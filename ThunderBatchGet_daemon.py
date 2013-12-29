@@ -161,8 +161,8 @@ class DownloadTask(object):
         self.manual_stop_flag = False
         self.retry_time += 1
         self.logger.info("thread start")
-        wget_cmd = ['/usr/bin/wget', '--continue', '--header', self.dl_headers, '-O', self.filename, 
-                '--progress=dot', self.dl_url]
+        wget_cmd = ['/usr/bin/wget', '--continue', '--retry-connrefused', '-U', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.65 Safari/537.36', '--header', self.dl_headers, '-O', self.filename, '--progress=dot', self.dl_url]
+        #wget_cmd = ['/usr/bin/curl', '-#', '-C', '-', '-A', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.65 Safari/537.36', '--location', '--header', self.dl_headers, '-o', self.filename, self.dl_url]
         self.dl_thread = DownloadThread(wget_cmd, self.std_deque, self.err_deque, self.dl_dir)
         self.dl_thread.start()
 
@@ -364,6 +364,12 @@ class ThunderTaskManager(object):
             else:
                 self.thread_pool[uid].start_thread()
 
+    def requeue(self, uid):
+        self.task_queue.append(uid)
+        task = self.thread_pool[uid]
+        task.start_time = None
+        task.retry_time = 0
+
 
 @route("/thunder_single_task")
 @LogException
@@ -420,6 +426,12 @@ def force_stop(tid = None):
     task_mgr.force_stop(tid)
     return ""
 
+@route("/requeue/:tid")
+@LogException
+def requeue(tid = None):
+    assert tid is not None, "need tid"
+    task_mgr.requeue(tid)
+    return ""
 
 @route("/")
 @view('monitor')
