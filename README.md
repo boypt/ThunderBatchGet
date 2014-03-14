@@ -1,3 +1,12 @@
+#Note
+
+I find that this projects have done much better jobs than I did, thus this project is droped.
+
+    * https://github.com/ohsc/ThunderLixianAssistant
+    * http://aria2.sourceforge.net
+    * or
+    * https://github.com/iambus/xunlei-lixian
+
 #ThunderBatchGet
 
 A web UI for retrieving Thunder(Xenlei) Cloud Downloads without their client software via wget. Runs under Linux.
